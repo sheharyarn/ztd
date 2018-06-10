@@ -11,7 +11,7 @@ defmodule ZTD.Application do
       # Start the Ecto repository
       supervisor(ZTD.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(ZTDWeb.Endpoint, []),
+      supervisor(ZTD.Web.Endpoint, []),
       # Start your own worker by calling: ZTD.Worker.start_link(arg1, arg2, arg3)
       # worker(ZTD.Worker, [arg1, arg2, arg3]),
     ]
@@ -25,7 +25,7 @@ defmodule ZTD.Application do
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   def config_change(changed, _new, removed) do
-    ZTDWeb.Endpoint.config_change(changed, removed)
+    ZTD.Web.Endpoint.config_change(changed, removed)
     :ok
   end
 end

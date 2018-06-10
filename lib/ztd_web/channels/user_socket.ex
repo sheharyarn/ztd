@@ -1,8 +1,8 @@
-defmodule ZTDWeb.UserSocket do
+defmodule ZTD.Web.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", ZTDWeb.RoomChannel
+  # channel "room:*", ZTD.Web.RoomChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
@@ -30,7 +30,7 @@ defmodule ZTDWeb.UserSocket do
   # Would allow you to broadcast a "disconnect" event and terminate
   # all active sockets and channels for a given user:
   #
-  #     ZTDWeb.Endpoint.broadcast("user_socket:#{user.id}", "disconnect", %{})
+  #     ZTD.Web.Endpoint.broadcast("user_socket:#{user.id}", "disconnect", %{})
   #
   # Returning `nil` makes this socket anonymous.
   def id(_socket), do: nil

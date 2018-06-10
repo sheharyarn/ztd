@@ -1,5 +1,5 @@
-defmodule ZTDWeb.Router do
-  use ZTDWeb, :router
+defmodule ZTD.Web.Router do
+  use ZTD.Web, :router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -13,14 +13,14 @@ defmodule ZTDWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", ZTDWeb do
+  scope "/", ZTD.Web do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", ZTDWeb do
+  # scope "/api", ZTD.Web do
   #   pipe_through :api
   # end
 end

@@ -12,10 +12,10 @@ config :ztd,
   generators: [binary_id: true]
 
 # Configures the endpoint
-config :ztd, ZTDWeb.Endpoint,
+config :ztd, ZTD.Web.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "Q6jgvP5PBpizrwNmRpmL+jufEpjbTV9JjEH+FC6HngbYlk2EThFD2CHKSAZ85jOy",
-  render_errors: [view: ZTDWeb.ErrorView, accepts: ~w(html json)],
+  render_errors: [view: ZTD.Web.ErrorView, accepts: ~w(html json)],
   pubsub: [name: ZTD.PubSub,
            adapter: Phoenix.PubSub.PG2]
 

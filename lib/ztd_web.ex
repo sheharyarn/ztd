@@ -1,12 +1,12 @@
-defmodule ZTDWeb do
+defmodule ZTD.Web do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, views, channels and so on.
 
   This can be used in your application as:
 
-      use ZTDWeb, :controller
-      use ZTDWeb, :view
+      use ZTD.Web, :controller
+      use ZTD.Web, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -19,17 +19,18 @@ defmodule ZTDWeb do
 
   def controller do
     quote do
-      use Phoenix.Controller, namespace: ZTDWeb
+      use Phoenix.Controller, namespace: ZTD.Web
       import Plug.Conn
-      import ZTDWeb.Router.Helpers
-      import ZTDWeb.Gettext
+      import ZTD.Web.Router.Helpers
+      import ZTD.Web.Gettext
     end
   end
 
   def view do
     quote do
-      use Phoenix.View, root: "lib/ztd_web/templates",
-                        namespace: ZTDWeb
+      use Phoenix.View,
+        root: "lib/ztd_web/templates",
+        namespace: ZTD.Web
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
@@ -37,9 +38,9 @@ defmodule ZTDWeb do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      import ZTDWeb.Router.Helpers
-      import ZTDWeb.ErrorHelpers
-      import ZTDWeb.Gettext
+      import ZTD.Web.Router.Helpers
+      import ZTD.Web.ErrorHelpers
+      import ZTD.Web.Gettext
     end
   end
 
@@ -54,7 +55,7 @@ defmodule ZTDWeb do
   def channel do
     quote do
       use Phoenix.Channel
-      import ZTDWeb.Gettext
+      import ZTD.Web.Gettext
     end
   end
 

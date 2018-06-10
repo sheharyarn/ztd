@@ -1,7 +1,7 @@
-defmodule ZTDWeb.Endpoint do
+defmodule ZTD.Web.Endpoint do
   use Phoenix.Endpoint, otp_app: :ztd
 
-  socket "/socket", ZTDWeb.UserSocket
+  socket "/socket", ZTD.Web.UserSocket
 
   # Serve at "/" the static files from "priv/static" directory.
   #
@@ -37,7 +37,7 @@ defmodule ZTDWeb.Endpoint do
     key: "_ztd_key",
     signing_salt: "ekKX31ic"
 
-  plug ZTDWeb.Router
+  plug ZTD.Web.Router
 
   @doc """
   Callback invoked for dynamically configuring the endpoint.

@@ -1,3 +1,3 @@
-defmodule ZTDWeb.LayoutView do
-  use ZTDWeb, :view
+defmodule ZTD.Web.LayoutView do
+  use ZTD.Web, :view
 end

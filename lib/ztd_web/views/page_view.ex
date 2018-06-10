@@ -1,3 +1,3 @@
-defmodule ZTDWeb.PageView do
-  use ZTDWeb, :view
+defmodule ZTD.Web.PageView do
+  use ZTD.Web, :view
 end

@@ -1,4 +1,4 @@
-defmodule ZTDWeb.ChannelCase do
+defmodule ZTD.Web.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -21,7 +21,7 @@ defmodule ZTDWeb.ChannelCase do
       use Phoenix.ChannelTest
 
       # The default endpoint for testing
-      @endpoint ZTDWeb.Endpoint
+      @endpoint ZTD.Web.Endpoint
     end
   end
 

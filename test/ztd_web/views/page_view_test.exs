@@ -1,3 +1,3 @@
-defmodule ZTDWeb.PageViewTest do
-  use ZTDWeb.ConnCase, async: true
+defmodule ZTD.Web.PageViewTest do
+  use ZTD.Web.ConnCase, async: true
 end

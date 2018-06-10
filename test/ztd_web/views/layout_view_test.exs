@@ -1,3 +1,3 @@
-defmodule ZTDWeb.LayoutViewTest do
-  use ZTDWeb.ConnCase, async: true
+defmodule ZTD.Web.LayoutViewTest do
+  use ZTD.Web.ConnCase, async: true
 end
