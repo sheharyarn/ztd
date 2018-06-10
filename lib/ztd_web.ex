@@ -17,14 +17,20 @@ defmodule ZTD.Web do
   and import those modules here.
   """
 
+
   def controller do
     quote do
       use Phoenix.Controller, namespace: ZTD.Web
+
       import Plug.Conn
       import ZTD.Web.Router.Helpers
       import ZTD.Web.Gettext
+
+      plug :put_view, ZTD.Web.view_for(__MODULE__)
     end
   end
+
+
 
   def view do
     quote do
@@ -44,9 +50,12 @@ defmodule ZTD.Web do
     end
   end
 
+
+
   def router do
     quote do
       use Phoenix.Router
+
       import Plug.Conn
       import Phoenix.Controller
     end
@@ -59,10 +68,23 @@ defmodule ZTD.Web do
     end
   end
 
+
+
   @doc """
   When used, dispatch to the appropriate controller/view/etc.
   """
   defmacro __using__(which) when is_atom(which) do
     apply(__MODULE__, which, [])
   end
+
+
+
+  # Figure out what View to use from Controller Module
+  def view_for(controller) do
+    controller
+    |> to_string
+    |> String.replace("Controllers", "Views")
+    |> String.to_atom(view)
+  end
+
 end
