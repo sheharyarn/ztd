@@ -19,4 +19,10 @@ defmodule ZTD.Todo do
   end
 
 
+
+  @doc "Insert new todo"
+  def insert(%{} = params) do
+    Item.insert(params)
+  end
+
 end
