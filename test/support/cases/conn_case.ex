@@ -1,9 +1,11 @@
-defmodule ZTD.Web.ChannelCase do
+defmodule ZTD.Tests.Support.ConnCase do
+  use ExUnit.CaseTemplate
+
   @moduledoc """
   This module defines the test case to be used by
-  channel tests.
+  tests that require setting up a connection.
 
-  Such tests rely on `Phoenix.ChannelTest` and also
+  Such tests rely on `Phoenix.ConnTest` and also
   import other functionality to make it easier
   to build common datastructures and query the data layer.
 
@@ -13,12 +15,12 @@ defmodule ZTD.Web.ChannelCase do
   of the test unless the test case is marked as async.
   """
 
-  use ExUnit.CaseTemplate
 
   using do
     quote do
-      # Import conveniences for testing with channels
-      use Phoenix.ChannelTest
+      # Import conveniences for testing with connections
+      use Phoenix.ConnTest
+      import ZTD.Web.Router.Helpers
 
       # The default endpoint for testing
       @endpoint ZTD.Web.Endpoint
@@ -27,11 +29,8 @@ defmodule ZTD.Web.ChannelCase do
 
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(ZTD.Repo)
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(ZTD.Repo, {:shared, self()})
-    end
-    :ok
+    ZTD.Tests.Support.setup_ecto(tags)
+    {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 
 end
