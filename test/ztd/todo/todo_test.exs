@@ -61,4 +61,25 @@ defmodule ZTD.Tests.Todo do
     end
   end
 
+
+
+  describe "delete/1" do
+    setup do
+      [item: Item.insert!(title: "Some Item")]
+    end
+
+
+    test "deletes an item if it exists", %{item: item} do
+      assert :ok = Todo.delete(item.id)
+      assert 0 = length(Item.all)
+    end
+
+
+    test "does nothing if the item does not exist" do
+      unknown_id = Ecto.UUID.generate
+      assert :ok = Todo.delete(unknown_id)
+      assert 1 = length(Item.all)
+    end
+  end
+
 end

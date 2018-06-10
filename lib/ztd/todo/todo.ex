@@ -36,4 +36,19 @@ defmodule ZTD.Todo do
     |> Item.update(params)
   end
 
+
+
+  @doc """
+  Delete a todo
+
+  Using a where clause so it doesn't raise errors for
+  stale structs
+  """
+  def delete(id) do
+    Item
+    |> Query.where([i], i.id == ^id)
+    |> Repo.delete_all
+    :ok
+  end
+
 end
