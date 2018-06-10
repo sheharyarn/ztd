@@ -5,10 +5,12 @@ defmodule ZTD.Todo do
 
   require Query
 
+
   @moduledoc """
   Provides an interface to add, update, delete and
   mark items done/undone.
   """
+
 
 
   @doc "Get all todos"
@@ -23,6 +25,15 @@ defmodule ZTD.Todo do
   @doc "Insert new todo"
   def insert(%{} = params) do
     Item.insert(params)
+  end
+
+
+
+  @doc "Update a todo"
+  def update(id, %{} = params) do
+    id
+    |> Item.get!
+    |> Item.update(params)
   end
 
 end

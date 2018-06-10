@@ -1,6 +1,8 @@
 defmodule ZTD.Tests.Todo do
   use ZTD.Tests.Support.Case
+
   alias ZTD.Todo
+  alias ZTD.Todo.Item
 
 
 
@@ -11,10 +13,10 @@ defmodule ZTD.Tests.Todo do
 
 
     test "returns pending items first, and done items at the end" do
-      Todo.Item.insert!(title: "Done 1",    done: true)
-      Todo.Item.insert!(title: "Pending 1", done: false)
-      Todo.Item.insert!(title: "Pending 2", done: false)
-      Todo.Item.insert!(title: "Done 2",    done: true)
+      Item.insert!(title: "Done 1",    done: true)
+      Item.insert!(title: "Pending 1", done: false)
+      Item.insert!(title: "Pending 2", done: false)
+      Item.insert!(title: "Done 2",    done: true)
 
       items = Todo.all |> Enum.map(&(&1.title))
       assert items == ["Pending 1", "Pending 2", "Done 1", "Done 2"]
@@ -26,10 +28,10 @@ defmodule ZTD.Tests.Todo do
   describe "insert/1" do
     test "returns :ok for valid params" do
       assert {:ok, _} = Todo.insert(%{title: "Buy Milk"})
-      assert 1 = length(Todo.Item.all)
+      assert 1 = length(Item.all)
 
       assert {:ok, _} = Todo.insert(%{title: "Buy Eggs", done: true})
-      assert 2 = length(Todo.Item.all)
+      assert 2 = length(Item.all)
     end
 
 
@@ -38,4 +40,25 @@ defmodule ZTD.Tests.Todo do
       assert error_message(changeset, :title) =~ ~r/can't be blank/
     end
   end
+
+
+
+  describe "update/2" do
+    setup do
+      [item: Item.insert!(title: "Some Item")]
+    end
+
+
+    test "can update the title of an item", %{item: item} do
+      assert {:ok, item} = Todo.update(item.id, %{title: "New Name"})
+      assert item.title == "New Name"
+    end
+
+
+    test "can mark items done", %{item: item} do
+      assert {:ok, item} = Todo.update(item.id, %{done: true})
+      assert item.done == true
+    end
+  end
+
 end
