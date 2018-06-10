@@ -26,7 +26,8 @@ defmodule ZTD.Web do
       import ZTD.Web.Router.Helpers
       import ZTD.Web.Gettext
 
-      plug :put_view, ZTD.Web.view_for(__MODULE__)
+      plug :put_view, ZTD.Web.inflect_view(__MODULE__)
+      plug :put_layout, {ZTD.Web.Views.Layout, :app}
     end
   end
 
@@ -36,7 +37,7 @@ defmodule ZTD.Web do
     quote do
       use Phoenix.View,
         root: "lib/ztd_web/templates",
-        namespace: ZTD.Web
+        namespace: ZTD.Web.Views
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
@@ -79,12 +80,12 @@ defmodule ZTD.Web do
 
 
 
-  # Figure out what View to use from Controller Module
-  def view_for(controller) do
+  # Figure out what View / Template to use from Controller Module
+  def inflect_view(controller) do
     controller
     |> to_string
     |> String.replace("Controllers", "Views")
-    |> String.to_atom(view)
+    |> String.to_atom
   end
 
 end
