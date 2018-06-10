@@ -1,4 +1,4 @@
-defmodule ZTD.DataCase do
+defmodule ZTD.Tests.Support.DataCase do
   @moduledoc """
   This module defines the setup for tests requiring
   access to the application's data layer.
@@ -21,7 +21,7 @@ defmodule ZTD.DataCase do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import ZTD.DataCase
+      import ZTD.Tests.Support.DataCase
     end
   end
 

@@ -1,5 +1,5 @@
 defmodule ZTD.Web.PageControllerTest do
-  use ZTD.Web.ConnCase
+  use ZTD.Tests.Support.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get conn, "/"
