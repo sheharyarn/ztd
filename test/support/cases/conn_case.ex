@@ -1,4 +1,6 @@
 defmodule ZTD.Tests.Support.ConnCase do
+  use ExUnit.CaseTemplate
+
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -13,7 +15,6 @@ defmodule ZTD.Tests.Support.ConnCase do
   of the test unless the test case is marked as async.
   """
 
-  use ExUnit.CaseTemplate
 
   using do
     quote do
