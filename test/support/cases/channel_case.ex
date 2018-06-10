@@ -27,11 +27,7 @@ defmodule ZTD.Tests.Support.ChannelCase do
 
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(ZTD.Repo)
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(ZTD.Repo, {:shared, self()})
-    end
-    :ok
+    ZTD.Tests.Support.setup_ecto(tags)
   end
 
 end

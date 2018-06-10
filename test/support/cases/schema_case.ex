@@ -1,4 +1,4 @@
-defmodule ZTD.Tests.Support.DataCase do
+defmodule ZTD.Tests.Support.SchemaCase do
   @moduledoc """
   This module defines the setup for tests requiring
   access to the application's data layer.
@@ -21,18 +21,12 @@ defmodule ZTD.Tests.Support.DataCase do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import ZTD.Tests.Support.DataCase
+      import ZTD.Tests.Support.SchemaCase
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(ZTD.Repo)
-
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(ZTD.Repo, {:shared, self()})
-    end
-
-    :ok
+    ZTD.Tests.Support.setup_ecto(tags)
   end
 
   @doc """

@@ -28,10 +28,7 @@ defmodule ZTD.Tests.Support.ConnCase do
 
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(ZTD.Repo)
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(ZTD.Repo, {:shared, self()})
-    end
+    ZTD.Tests.Support.setup_ecto(tags)
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 
