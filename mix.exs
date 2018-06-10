@@ -38,6 +38,8 @@ defmodule ZTD.Mixfile do
       {:cowboy,               "~> 1.0"},
       {:phoenix_html,         "~> 2.10"},
       {:phoenix_live_reload,  "~> 1.0", only: :dev},
+
+      {:ecto_rut,             "~> 1.2.2"},
     ]
   end
 
