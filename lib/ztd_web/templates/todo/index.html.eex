@@ -1,3 +1,3 @@
 <div>
-  <%= react_component("Components.Todo") %>
+  <%= react_component("Components.Todo", %{items: @items}) %>
 </div>
