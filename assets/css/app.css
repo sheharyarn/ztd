@@ -1,1 +1,10 @@
 /* This file is for your main application css. */
+
+
+/* Basic Layout
+ * ************ */
+
+header h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}

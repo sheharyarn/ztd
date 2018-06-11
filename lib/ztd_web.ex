@@ -48,6 +48,7 @@ defmodule ZTD.Web do
       import ZTD.Web.Router.Helpers
       import ZTD.Web.ErrorHelpers
       import ZTD.Web.Gettext
+      import ReactPhoenix.ClientSide
     end
   end
 
