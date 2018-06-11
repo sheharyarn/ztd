@@ -21,9 +21,9 @@ defmodule ZTD.Web do
   def controller do
     quote do
       use Phoenix.Controller, namespace: ZTD.Web
+      alias ZTD.Web.Router.Helpers, as: Router
 
       import Plug.Conn
-      import ZTD.Web.Router.Helpers
       import ZTD.Web.Gettext
 
       plug :put_view, ZTD.Web.inflect_view(__MODULE__)
@@ -32,26 +32,21 @@ defmodule ZTD.Web do
   end
 
 
-
   def view do
     quote do
+      use Phoenix.HTML
       use Phoenix.View,
         root: "lib/ztd_web/templates",
         namespace: ZTD.Web.Views
 
-      # Import convenience functions from controllers
+      alias ZTD.Web.Router.Helpers,  as: Router
+      alias ReactPhoenix.ClientSide, as: React
+
       import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
-
-      # Use all HTML functionality (forms, tags, etc)
-      use Phoenix.HTML
-
-      import ZTD.Web.Router.Helpers
       import ZTD.Web.ErrorHelpers
       import ZTD.Web.Gettext
-      import ReactPhoenix.ClientSide
     end
   end
-
 
 
   def router do
@@ -62,6 +57,7 @@ defmodule ZTD.Web do
       import Phoenix.Controller
     end
   end
+
 
   def channel do
     quote do

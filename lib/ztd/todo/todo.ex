@@ -16,7 +16,7 @@ defmodule ZTD.Todo do
   @doc "Get all todos"
   def all do
     Item
-    |> Query.order_by(asc: :done)
+    |> Query.order_by(asc: :inserted_at)
     |> Repo.all
   end
 

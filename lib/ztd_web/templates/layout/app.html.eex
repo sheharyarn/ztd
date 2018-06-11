@@ -8,7 +8,7 @@
     <meta name="author" content="">
 
     <title>ZTD</title>
-    <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+    <link rel="stylesheet" href="<%= Router.static_path(@conn, "/css/app.css") %>">
   </head>
 
   <body>
@@ -25,6 +25,6 @@
       </main>
 
     </div>
-    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+    <script src="<%= Router.static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>
