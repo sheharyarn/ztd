@@ -1,6 +1,10 @@
 import React     from 'react'
 import PropTypes from 'prop-types'
 
+import TodoItem  from './todo-item'
+
+
+
 class Todo extends React.Component {
   constructor(props) {
     super(props);
@@ -9,6 +13,7 @@ class Todo extends React.Component {
       items: this.props.items,
     };
   }
+
 
   render() {
     const {items} = this.state;
@@ -19,7 +24,7 @@ class Todo extends React.Component {
 
         <div className='item-list'>
           { items.map(i =>
-            <todo-item key={i.id} item={i} />
+            <TodoItem key={i.id} item={i} />
           )}
         </div>
       </div>
@@ -28,15 +33,17 @@ class Todo extends React.Component {
 }
 
 
-// Prop Specification
 
+// Prop Specification
 Todo.defaultProps = {
   items: [],
 };
 
 Todo.propTypes = {
-  items: PropTypes.array.isRequired,
+  items: PropTypes.arrayOf(TodoItem.propTypes.item).isRequired,
 };
 
 
+
+// Export
 export default Todo;

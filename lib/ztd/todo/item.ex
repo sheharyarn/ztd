@@ -9,7 +9,7 @@ defmodule ZTD.Todo.Item do
   @fields_required [:title]
   @fields_optional [:done]
   @fields_all (@fields_optional ++ @fields_required)
-  @derive {Poison.Encoder, only: @fields_all}
+  @derive {Poison.Encoder, only: [:id | @fields_all]}
 
 
   schema "todo_items" do
