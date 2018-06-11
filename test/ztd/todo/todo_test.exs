@@ -12,14 +12,14 @@ defmodule ZTD.Tests.Todo do
     end
 
 
-    test "returns pending items first, and done items at the end" do
+    test "returns items in ascending order of creation date" do
       Item.insert!(title: "Done 1",    done: true)
       Item.insert!(title: "Pending 1", done: false)
       Item.insert!(title: "Pending 2", done: false)
       Item.insert!(title: "Done 2",    done: true)
 
       items = Todo.all |> Enum.map(&(&1.title))
-      assert items == ["Pending 1", "Pending 2", "Done 1", "Done 2"]
+      assert items == ["Done 1", "Pending 1", "Pending 2", "Done 2"]
     end
   end
 
