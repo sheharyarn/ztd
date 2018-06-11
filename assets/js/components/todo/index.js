@@ -1,5 +1,6 @@
 import React     from 'react'
 import PropTypes from 'prop-types'
+import _         from 'lodash'
 
 import TodoItem  from './todo-item'
 
@@ -12,6 +13,24 @@ class Todo extends React.Component {
     this.state = {
       items: this.props.items,
     };
+
+    this.handleUpdate = this.handleUpdate.bind(this);
+  }
+
+
+  // Find the item in the list and update state
+  handleUpdate(item) {
+    const {items} = this.state;
+    const updated = _.map(items, i => {
+      if (i.id === item.id) {
+        return _.merge(i, item);
+      } else {
+        return i;
+      }
+    });
+
+    console.log("New State", updated);
+    this.setState({items: updated})
   }
 
 
@@ -24,7 +43,7 @@ class Todo extends React.Component {
 
         <div className='item-list'>
           { items.map(i =>
-            <TodoItem key={i.id} item={i} />
+            <TodoItem key={i.id} item={i} onUpdate={this.handleUpdate} />
           )}
         </div>
       </div>
