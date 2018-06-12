@@ -21,6 +21,8 @@ defmodule ZTD.Tests.Support.ChannelCase do
       # Import conveniences for testing with channels
       use Phoenix.ChannelTest
 
+      alias ZTD.Tests.Support
+
       # The default endpoint for testing
       @endpoint ZTD.Web.Endpoint
     end

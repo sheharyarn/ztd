@@ -5,9 +5,9 @@ defmodule ZTD.Web.Channels.TodoEvents do
   alias ZTD.Web.Endpoint
 
 
-  @channel  "todo_events"
-  @outgoing "event"
-  @allowed  [:insert, :update, :delete]
+  @allowed [:insert, :update, :delete]
+  @channel "todo_events"
+  @relay   "event"
 
 
   # Connect to Channel
@@ -62,7 +62,7 @@ defmodule ZTD.Web.Channels.TodoEvents do
 
   defp broadcast_event!(type, item) when type in @allowed do
     payload = %{type: type, data: item}
-    Endpoint.broadcast!(@channel, @outgoing, payload)
+    Endpoint.broadcast!(@channel, @relay, payload)
   end
 
 end

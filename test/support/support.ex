@@ -18,6 +18,12 @@ defmodule ZTD.Tests.Support do
   end
 
 
+  @doc "Sleep / wait for something"
+  def wait(ms \\ 5) do
+    Process.sleep(ms)
+  end
+
+
 
 
   defmodule Schema do
