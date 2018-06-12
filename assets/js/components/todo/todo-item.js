@@ -7,15 +7,22 @@ class TodoItem extends React.Component {
   constructor(props) {
     super(props);
 
-    this.toggleDone = this.toggleDone.bind(this);
+    this.handleDone = this.handleDone.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
 
-  toggleDone() {
+  handleDone() {
     const {item} = this.props;
     const updated = _.merge(item, {done: !item.done});
-    this.props.onUpdate(updated);
+    this.props.broadcast("update", item);
   }
+
+  handleDelete() {
+    const {item} = this.props;
+    this.props.broadcast("delete", item);
+  }
+
 
 
   render() {
@@ -29,14 +36,14 @@ class TodoItem extends React.Component {
           type='checkbox'
           value='Done'
           checked={item.done}
-          onChange={this.toggleDone}
+          onChange={this.handleDone}
         />
 
         <span className={`content ${doneClass}`}>
           {item.title}
         </span>
 
-        <a className='delete'>×</a>
+        <a className='delete' onClick={this.handleDelete}>×</a>
       </div>
     );
   }
@@ -46,7 +53,7 @@ class TodoItem extends React.Component {
 
 // Prop Specification
 TodoItem.propTypes = {
-  onUpdate: PropTypes.func.isRequired,
+  broadcast: PropTypes.func.isRequired,
   item: PropTypes.shape({
     id:    PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,

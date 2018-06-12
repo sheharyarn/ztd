@@ -24,10 +24,17 @@ defmodule ZTD.Web.Channels.TodoEvents do
   # -------------
 
   def handle_in("update", payload, socket) do
-    %{id: id} = item = parse(payload)
+    item = %{id: id} = parse(payload)
     {:ok, item} = Todo.update(id, item)
     broadcast_event!(:update, item)
+    {:noreply, socket}
+  end
 
+
+  def handle_in("delete", payload, socket) do
+    item = %{id: id} = parse(payload)
+    :ok = Todo.delete(id)
+    broadcast_event!(:delete, item)
     {:noreply, socket}
   end
 

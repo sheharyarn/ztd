@@ -15,7 +15,7 @@ class Todo extends React.Component {
       items: this.props.items,
     };
 
-    this.handleUpdate = this.handleUpdate.bind(this);
+    this.broadcast = this.broadcast.bind(this);
     this.handleOkEvent = this.handleOkEvent.bind(this);
     this.handleErrorEvent = this.handleErrorEvent.bind(this);
   }
@@ -42,7 +42,7 @@ class Todo extends React.Component {
     let updated = items;
 
     switch (response.type) {
-      // Find the item in the list and update state
+      // Find the item in the list
       case "update":
         updated = _.map(items, i => {
           if (i.id === item.id) {
@@ -58,7 +58,13 @@ class Todo extends React.Component {
       case "insert":
         break;
 
+
+      // Delete the item from list
       case "delete":
+        updated = _.reject(items, i => {
+          return i.id === item.id;
+        });
+        console.log("Deleted:", item.id);
         break;
 
 
@@ -69,6 +75,7 @@ class Todo extends React.Component {
         break;
     }
 
+    // Finally update state
     this.setState({items: updated})
   }
 
@@ -79,11 +86,12 @@ class Todo extends React.Component {
   }
 
 
-  handleUpdate(item) {
+  // Broadcast item events on channel
+  broadcast(type, item) {
     const {channel} = this.state;
 
     channel
-      .push("update", {data: item})
+      .push(type, {data: item})
       .receive("ok", this.handleOkEvent)
       .receive("error", this.handleErrorEvent)
   }
@@ -98,7 +106,11 @@ class Todo extends React.Component {
 
         <div className='item-list'>
           { items.map(i =>
-            <TodoItem key={i.id} item={i} onUpdate={this.handleUpdate} />
+            <TodoItem
+              key={i.id}
+              item={i}
+              broadcast={this.broadcast}
+            />
           )}
         </div>
       </div>
