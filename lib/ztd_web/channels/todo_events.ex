@@ -1,5 +1,6 @@
 defmodule ZTD.Web.Channels.TodoEvents do
   use Phoenix.Channel
+  alias ZTD.Todo
 
 
   # Connect to Channel
@@ -16,10 +17,22 @@ defmodule ZTD.Web.Channels.TodoEvents do
   # -------------
 
   def handle_in("update", payload, socket) do
-    require Logger
-    Logger.error inspect payload
-    {:reply, {:ok, payload}, socket}
+    %{id: id} = item = parse(payload)
+    Todo.update(id, item)
     {:noreply, socket}
+  end
+
+
+
+
+  # Private Helpers
+  # ---------------
+
+  defp parse(payload) do
+    %{data: item} =
+      BetterParams.symbolize_merge(payload, drop_string_keys: true)
+
+    item
   end
 
 end

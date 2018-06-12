@@ -16,34 +16,46 @@ class Todo extends React.Component {
     };
 
     this.handleUpdate = this.handleUpdate.bind(this);
-    this.handleOkResponse = this.handleOkResponse.bind(this);
-    this.handleErrorResponse = this.handleErrorResponse.bind(this);
+    this.handleOkEvent = this.handleOkEvent.bind(this);
+    this.handleErrorEvent = this.handleErrorEvent.bind(this);
   }
 
 
   // Connect to channel on mount
   componentDidMount() {
-    Socket
-      .channel("todo_events", {})
+    let channel = Socket.channel("todo_events", {});
+    channel.on("event", this.handleOkEvent);
+
+    channel
       .join()
-      .receive("ok",    this.handleOkResponse)
-      .receive("error", this.handleErrorResponse)
+      .receive("ok", this.handleOkEvent)
+      .receive("error", this.handleErrorEvent)
+
+    this.setState({channel});
   }
 
 
   // Handle OK Response on Channels
-  handleOkResponse(response) {
+  handleOkEvent(response) {
+    console.log("ok", response)
   }
 
 
   // Handle Error Response on Channels
-  handleErrorResponse(response) {
+  handleErrorEvent(response) {
+    console.log("error", response)
   }
 
 
   // Find the item in the list and update state
   handleUpdate(item) {
-    const {items} = this.state;
+    const {channel, items} = this.state;
+
+    channel
+      .push("update", {data: item})
+      .receive("ok", this.handleOkEvent)
+      .receive("error", this.handleErrorEvent)
+
     const updated = _.map(items, i => {
       if (i.id === item.id) {
         return _.merge(i, item);

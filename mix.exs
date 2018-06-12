@@ -40,6 +40,7 @@ defmodule ZTD.Mixfile do
       {:phoenix_live_reload,  "~> 1.0", only: :dev},
 
       {:ecto_rut,             "~> 1.2.2"},
+      {:better_params,        "~> 0.5.0"},
       {:react_phoenix,        "~> 0.5.2"},
     ]
   end
