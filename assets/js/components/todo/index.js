@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import _         from 'lodash'
 
 import Socket    from '../../socket'
+import TodoNew   from './todo-new'
 import TodoItem  from './todo-item'
 
 
@@ -42,6 +43,13 @@ class Todo extends React.Component {
     let updated = items;
 
     switch (response.type) {
+      // Insert new Item
+      case "insert":
+        updated = _.concat(items, item);
+        console.log("Inserted:", item.id);
+        break;
+
+
       // Find the item in the list
       case "update":
         updated = _.map(items, i => {
@@ -51,11 +59,7 @@ class Todo extends React.Component {
             return i;
           }
         });
-        console.log("Updated:", item.id);
-        break;
-
-
-      case "insert":
+        console.log("Updated: ", item.id);
         break;
 
 
@@ -64,13 +68,13 @@ class Todo extends React.Component {
         updated = _.reject(items, i => {
           return i.id === item.id;
         });
-        console.log("Deleted:", item.id);
+        console.log("Deleted: ", item.id);
         break;
 
 
       // Unexpected Message
       default:
-        console.log("Channel:", response);
+        console.log("Channel: ", response);
         updated = items;
         break;
     }
@@ -102,7 +106,9 @@ class Todo extends React.Component {
 
     return (
       <div className='todo-app'>
-        <todo-input />
+        <TodoNew
+          broadcast={this.broadcast}
+        />
 
         <div className='item-list'>
           { items.map(i =>
