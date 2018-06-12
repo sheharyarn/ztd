@@ -2,6 +2,7 @@ import React     from 'react'
 import PropTypes from 'prop-types'
 import _         from 'lodash'
 
+import Socket    from '../../socket'
 import TodoItem  from './todo-item'
 
 
@@ -15,6 +16,28 @@ class Todo extends React.Component {
     };
 
     this.handleUpdate = this.handleUpdate.bind(this);
+    this.handleOkResponse = this.handleOkResponse.bind(this);
+    this.handleErrorResponse = this.handleErrorResponse.bind(this);
+  }
+
+
+  // Connect to channel on mount
+  componentDidMount() {
+    Socket
+      .channel("todo_events", {})
+      .join()
+      .receive("ok",    this.handleOkResponse)
+      .receive("error", this.handleErrorResponse)
+  }
+
+
+  // Handle OK Response on Channels
+  handleOkResponse(response) {
+  }
+
+
+  // Handle Error Response on Channels
+  handleErrorResponse(response) {
   }
 
 
