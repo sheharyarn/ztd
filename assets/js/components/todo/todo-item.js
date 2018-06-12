@@ -8,6 +8,7 @@ class TodoItem extends React.Component {
     super(props);
 
     this.handleDone = this.handleDone.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
   }
 
@@ -15,6 +16,12 @@ class TodoItem extends React.Component {
   handleDone() {
     const {item} = this.props;
     const updated = _.merge(item, {done: !item.done});
+    this.props.broadcast("update", item);
+  }
+
+  handleEdit(e) {
+    const {item} = this.props;
+    const updated = _.merge(item, {title: e.target.value});
     this.props.broadcast("update", item);
   }
 
@@ -39,9 +46,12 @@ class TodoItem extends React.Component {
           onChange={this.handleDone}
         />
 
-        <span className={`content ${doneClass}`}>
-          {item.title}
-        </span>
+        <input
+          className={`content ${doneClass}`}
+          type='text'
+          value={item.title}
+          onChange={this.handleEdit}
+        />
 
         <a className='delete' onClick={this.handleDelete}>×</a>
       </div>

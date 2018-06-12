@@ -32,10 +32,12 @@ header.header {
 
 
 .todo-app .item-list .item {
-  font-size: 1.5em;
+  font-size: 1.4em;
 
   .content {
     display: inline-block;
+    width: 82%;
+    border: none;
 
     &.is-done {
       color: #ccc;
