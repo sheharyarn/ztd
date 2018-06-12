@@ -20,11 +20,21 @@ class TodoItem extends React.Component {
 
   render() {
     const {item} = this.props;
-    const klass = item.done ? 'item is-done' : 'item';
+    const doneClass = item.done ? 'is-done' : '';
 
     return (
-      <div className={klass} data-item-id={item.id} onClick={this.toggleDone}>
-        {item.title}
+      <div className='item' data-item-id={item.id}>
+        <input
+          className='status'
+          type='checkbox'
+          value='Done'
+          checked={item.done}
+          onChange={this.toggleDone}
+        />
+
+        <span className={`content ${doneClass}`}>
+          {item.title}
+        </span>
       </div>
     );
   }

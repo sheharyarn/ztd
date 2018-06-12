@@ -7,14 +7,14 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>ZTD</title>
+    <title><%= title() %></title>
     <link rel="stylesheet" href="<%= Router.static_path(@conn, "/css/app.css") %>">
   </head>
 
   <body>
-    <div class="container">
+    <div id='ztd-app' class="container">
       <header class="header">
-        <h1>ZTD</h1>
+        <h1><%= title() %></h1>
       </header>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>

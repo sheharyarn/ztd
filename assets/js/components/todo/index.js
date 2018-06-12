@@ -29,7 +29,6 @@ class Todo extends React.Component {
       }
     });
 
-    console.log("New State", updated);
     this.setState({items: updated})
   }
 

@@ -4,10 +4,21 @@
 /* Basic Layout
  * ************ */
 
-header h1 {
-  text-align: center;
-  margin-bottom: 20px;
+#ztd-app {
+  max-width: 25em;
+  margin: 1em auto;
 }
+
+
+header.header {
+  margin-bottom: 20px;
+
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+}
+
 
 
 
@@ -15,19 +26,26 @@ header h1 {
 /* Todo Components
  * *************** */
 
-.todo-app {
-  .item-list {
-    max-width: 20em;
-    margin: 1em auto;
-    text-align: center;
+.todo-app .item-list {
+  padding: 1em 2em;
+}
 
-    .item {
-      &.is-done {
-        color: #ccc;
-        text-decoration: line-through;
-      }
 
-      font-size: 1.5em;
+.todo-app .item-list .item {
+  font-size: 1.5em;
+
+  .content {
+    display: inline-block;
+
+    &.is-done {
+      color: #ccc;
+      text-decoration: line-through;
     }
+  }
+
+  .status {
+    display: inline-block;
+    transform: scale(1.2);
+    margin-right: 0.5em !important;
   }
 }
