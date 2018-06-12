@@ -1,7 +1,7 @@
 defmodule ZTD.Web.Endpoint do
   use Phoenix.Endpoint, otp_app: :ztd
 
-  socket "/socket", ZTD.Web.UserSocket
+  socket "/socket", ZTD.Web.Sockets.Main
 
   # Serve at "/" the static files from "priv/static" directory.
   #

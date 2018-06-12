@@ -20,7 +20,7 @@ defmodule ZTD.Tests.Support.ConnCase do
     quote do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
-      import ZTD.Web.Router.Helpers
+      alias ZTD.Web.Router.Helpers, as: Router
 
       # The default endpoint for testing
       @endpoint ZTD.Web.Endpoint

@@ -1,8 +1,8 @@
-defmodule ZTD.Web.UserSocket do
+defmodule ZTD.Web.Sockets.Main do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", ZTD.Web.RoomChannel
+  channel "todo_events", ZTD.Web.Channels.TodoEvents
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

@@ -1,4 +1,4 @@
-defmodule ZTD.Web.ErrorView do
+defmodule ZTD.Web.Views.Error do
   use ZTD.Web, :view
 
   # If you want to customize a particular status code

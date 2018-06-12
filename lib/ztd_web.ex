@@ -17,40 +17,47 @@ defmodule ZTD.Web do
   and import those modules here.
   """
 
+
   def controller do
     quote do
       use Phoenix.Controller, namespace: ZTD.Web
+      alias ZTD.Web.Router.Helpers, as: Router
+
       import Plug.Conn
-      import ZTD.Web.Router.Helpers
       import ZTD.Web.Gettext
+
+      plug :put_view, ZTD.Web.inflect_view(__MODULE__)
+      plug :put_layout, {ZTD.Web.Views.Layout, :app}
     end
   end
 
+
   def view do
     quote do
+      use Phoenix.HTML
       use Phoenix.View,
         root: "lib/ztd_web/templates",
-        namespace: ZTD.Web
+        namespace: ZTD.Web.Views
 
-      # Import convenience functions from controllers
+      alias ZTD.Web.Router.Helpers,  as: Router
+      alias ReactPhoenix.ClientSide, as: React
+
       import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
-
-      # Use all HTML functionality (forms, tags, etc)
-      use Phoenix.HTML
-
-      import ZTD.Web.Router.Helpers
       import ZTD.Web.ErrorHelpers
       import ZTD.Web.Gettext
     end
   end
 
+
   def router do
     quote do
       use Phoenix.Router
+
       import Plug.Conn
       import Phoenix.Controller
     end
   end
+
 
   def channel do
     quote do
@@ -59,10 +66,23 @@ defmodule ZTD.Web do
     end
   end
 
+
+
   @doc """
   When used, dispatch to the appropriate controller/view/etc.
   """
   defmacro __using__(which) when is_atom(which) do
     apply(__MODULE__, which, [])
   end
+
+
+
+  # Figure out what View / Template to use from Controller Module
+  def inflect_view(controller) do
+    controller
+    |> to_string
+    |> String.replace("Controllers", "Views")
+    |> String.to_atom
+  end
+
 end
