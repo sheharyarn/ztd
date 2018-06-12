@@ -48,4 +48,11 @@ header.header {
     transform: scale(1.2);
     margin-right: 0.5em !important;
   }
+
+  .delete {
+    float: right;
+    font-size: 0.8em;
+    color: #777;
+    margin-top: 2px;
+  }
 }

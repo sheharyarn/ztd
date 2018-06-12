@@ -35,6 +35,8 @@ class TodoItem extends React.Component {
         <span className={`content ${doneClass}`}>
           {item.title}
         </span>
+
+        <a className='delete'>×</a>
       </div>
     );
   }

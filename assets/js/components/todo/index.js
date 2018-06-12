@@ -37,34 +37,55 @@ class Todo extends React.Component {
 
   // Handle OK Response on Channels
   handleOkEvent(response) {
-    console.log("ok", response)
+    const {items} = this.state;
+    const item = response.data;
+    let updated = items;
+
+    switch (response.type) {
+      // Find the item in the list and update state
+      case "update":
+        updated = _.map(items, i => {
+          if (i.id === item.id) {
+            return _.merge(i, item);
+          } else {
+            return i;
+          }
+        });
+        console.log("Updated:", item.id);
+        break;
+
+
+      case "insert":
+        break;
+
+      case "delete":
+        break;
+
+
+      // Unexpected Message
+      default:
+        console.log("Channel:", response);
+        updated = items;
+        break;
+    }
+
+    this.setState({items: updated})
   }
 
 
   // Handle Error Response on Channels
   handleErrorEvent(response) {
-    console.log("error", response)
+    console.error("Error!", response);
   }
 
 
-  // Find the item in the list and update state
   handleUpdate(item) {
-    const {channel, items} = this.state;
+    const {channel} = this.state;
 
     channel
       .push("update", {data: item})
       .receive("ok", this.handleOkEvent)
       .receive("error", this.handleErrorEvent)
-
-    const updated = _.map(items, i => {
-      if (i.id === item.id) {
-        return _.merge(i, item);
-      } else {
-        return i;
-      }
-    });
-
-    this.setState({items: updated})
   }
 
 
