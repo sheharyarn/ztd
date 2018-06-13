@@ -1,54 +1,47 @@
 defmodule ZTD.Todo do
-  alias ZTD.Repo
-  alias ZTD.Todo.Item
-  alias Ecto.Query
-
-  require Query
+  import ZTD.Todo.Config, only: [adapter: 0]
 
 
   @moduledoc """
   Provides an interface to add, update, delete and
-  mark items done/undone.
+  mark items done/undone. Selects the correct adapter
+  and delegates the method call to it.
+
+  NOTE:
+  If the application grows complex in the future, it
+  would make sense to turn this into a behaviour and
+  define a __using__ macro which implements it and
+  verifies if all callbacks have been implemented.
   """
+
 
 
 
   @doc "Get all todos"
   def all do
-    Item
-    |> Query.order_by(asc: :inserted_at)
-    |> Repo.all
+    adapter().all()
   end
 
 
 
   @doc "Insert new todo"
   def insert(%{} = params) do
-    Item.insert(params)
+    adapter().insert(params)
   end
 
 
 
   @doc "Update a todo"
   def update(id, %{} = params) do
-    id
-    |> Item.get!
-    |> Item.update(params)
+    adapter().update(id, params)
   end
 
 
 
-  @doc """
-  Delete a todo
-
-  Using a where clause so it doesn't raise errors for
-  stale structs
-  """
+  @doc "Delete a todo"
   def delete(id) do
-    Item
-    |> Query.where([i], i.id == ^id)
-    |> Repo.delete_all
-    :ok
+    adapter().delete(id)
   end
+
 
 end
