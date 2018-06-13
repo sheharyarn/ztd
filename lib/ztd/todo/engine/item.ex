@@ -1,4 +1,4 @@
-defmodule ZTD.Todo.Item do
+defmodule ZTD.Todo.Engine.Item do
   use ZTD.Repo.Schema
 
 
