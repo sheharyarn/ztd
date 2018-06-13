@@ -11,6 +11,7 @@ config :ztd,
 # Mode Settings / Adapters
 config :ztd, :mode,
   env_var: "APP_MODE",
+  default: :engine,
   adapters: [
     engine: ZTD.Todo.Engine,
     worker: ZTD.Todo.Worker

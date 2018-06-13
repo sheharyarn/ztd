@@ -32,6 +32,7 @@ defmodule ZTD.Todo.Config do
       :env_var
       |> get()
       |> System.get_env
+      |> fallback_to_default()
       |> normalize()
 
     case (mode in allowed_modes()) do
@@ -62,6 +63,13 @@ defmodule ZTD.Todo.Config do
     "#{str}"
     |> String.downcase
     |> String.to_existing_atom
+  end
+
+  defp fallback_to_default(mode) do
+    case mode do
+      nil  -> get(:default)
+      mode -> mode
+    end
   end
 
 end
