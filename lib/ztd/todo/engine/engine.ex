@@ -1,6 +1,6 @@
 defmodule ZTD.Todo.Engine do
   alias ZTD.Repo
-  alias ZTD.Todo.Engine.Item
+  alias ZTD.Todo.Engine.Schema
   alias Ecto.Query
 
   require Query
@@ -15,7 +15,7 @@ defmodule ZTD.Todo.Engine do
 
   @doc "Get all todos"
   def all do
-    Item
+    Schema
     |> Query.order_by(asc: :inserted_at)
     |> Repo.all
   end
@@ -24,7 +24,7 @@ defmodule ZTD.Todo.Engine do
 
   @doc "Insert new todo"
   def insert(%{} = params) do
-    Item.insert(params)
+    Schema.insert(params)
   end
 
 
@@ -32,8 +32,8 @@ defmodule ZTD.Todo.Engine do
   @doc "Update a todo"
   def update(id, %{} = params) do
     id
-    |> Item.get!
-    |> Item.update(params)
+    |> Schema.get!
+    |> Schema.update(params)
   end
 
 
@@ -45,7 +45,7 @@ defmodule ZTD.Todo.Engine do
   stale structs
   """
   def delete(id) do
-    Item
+    Schema
     |> Query.where([i], i.id == ^id)
     |> Repo.delete_all
     :ok
