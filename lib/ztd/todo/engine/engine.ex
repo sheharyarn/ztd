@@ -7,10 +7,9 @@ defmodule ZTD.Todo.Engine do
 
 
   @moduledoc """
-  Provides an interface to add, update, delete and
-  mark items done/undone.
+  Engine implementation for the Todo interface.
+  Implements all methods defined in Todo module.
   """
-
 
 
   @doc "Get all todos"
