@@ -22,7 +22,7 @@ defmodule ZTD.Todo.Config do
 
   @doc "Get Todo config for a specific key"
   def get(key, default \\ nil) when is_atom(key) do
-    Keyword.get(get(), key, default)
+    get() |> Keyword.get(key, default)
   end
 
 
