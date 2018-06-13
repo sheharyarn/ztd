@@ -32,8 +32,8 @@ defmodule ZTD.Todo.Config do
       :env_var
       |> get()
       |> System.get_env
-      |> fallback_to_default()
       |> normalize()
+      |> fallback_to_default()
 
     case (mode in allowed_modes()) do
       true  -> mode
@@ -67,7 +67,9 @@ defmodule ZTD.Todo.Config do
 
   defp fallback_to_default(mode) do
     case mode do
-      nil  -> get(:default)
+      mode when mode in ["", :"", nil] ->
+        get(:default)
+
       mode -> mode
     end
   end
