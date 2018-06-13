@@ -4,7 +4,14 @@ defmodule ZTD.Tests.Todo.Config do
 
 
   setup do
-    [configs: Application.get_env(:ztd, :mode)]
+    configs = Application.get_env(:ztd, :mode)
+
+    on_exit fn ->
+      # Revert to default mode
+      set_mode(configs[:default])
+    end
+
+    [configs: configs]
   end
 
 

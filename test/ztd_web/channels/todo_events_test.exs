@@ -1,7 +1,7 @@
 defmodule ZTD.Tests.Web.Channels.TodoEvents do
   use ZTD.Tests.Support.ChannelCase
 
-  alias ZTD.Todo.Item
+  alias ZTD.Todo.Engine.Schema, as: Item
   alias ZTD.Web.Channels.TodoEvents
 
 
