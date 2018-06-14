@@ -17,4 +17,20 @@ defmodule ZTD.Todo.Event do
   end
 
 
+  @doc "Encode event to string"
+  def encode!(%Event{} = event) do
+    Poison.encode!(event)
+  end
+
+
+  @doc "Decode string back to event"
+  def decode!(string) when is_binary(string) do
+    contents =
+      string
+      |> Poison.decode!
+      |> BetterParams.symbolize_merge(drop_string_keys: true)
+
+    new(contents.type, contents.data)
+  end
+
 end

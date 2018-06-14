@@ -14,7 +14,12 @@ config :ztd, :todo,
   default: :engine,
   adapters: [
     engine: ZTD.Todo.Engine,
-    worker: ZTD.Todo.Worker
+    worker: ZTD.Todo.Worker,
+  ],
+  amqp: [
+    engine_queue:    "events",
+    engine_exchange: "engine",
+    worker_exchange: "workers",
   ]
 
 
