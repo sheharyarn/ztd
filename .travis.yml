@@ -3,6 +3,8 @@ elixir:
   - 1.6.0
 otp_release:
   - 20.0
+services:
+  - rabbitmq
 sudo: false
 script:
   - mix test

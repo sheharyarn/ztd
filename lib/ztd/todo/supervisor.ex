@@ -54,8 +54,18 @@ defmodule ZTD.Todo.Supervisor do
   defp children(:engine) do
     [
       supervisor(ZTD.Repo, []),
+      worker(ZTD.Todo.Engine.Listener, []),
     ]
   end
+
+
+  # Children for Worker Mode
+  defp children(:worker) do
+    [
+      worker(ZTD.Todo.Worker.Broadcaster, []),
+    ]
+  end
+
 
 
   # Raise error for other modes

@@ -42,6 +42,7 @@ defmodule ZTD.Mixfile do
       {:ecto_rut,             "~> 1.2.2"},
       {:better_params,        "~> 0.5.0"},
       {:react_phoenix,        "~> 0.5.2"},
+      {:amqp,                 "~> 0.3.1"},
     ]
   end
 

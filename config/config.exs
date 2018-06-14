@@ -8,13 +8,18 @@ config :ztd,
   generators: [binary_id: true]
 
 
-# Mode Settings / Adapters
-config :ztd, :mode,
+# Todo Settings / Mode Adapters
+config :ztd, :todo,
   env_var: "APP_MODE",
   default: :engine,
   adapters: [
     engine: ZTD.Todo.Engine,
-    worker: ZTD.Todo.Worker
+    worker: ZTD.Todo.Worker,
+  ],
+  amqp: [
+    engine_queue:    "events",
+    engine_exchange: "engine",
+    worker_exchange: "workers",
   ]
 
 

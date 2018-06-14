@@ -4,7 +4,7 @@ defmodule ZTD.Todo.Config do
   """
 
   @app_name   :ztd
-  @config_key :mode
+  @config_key :todo
 
 
 
