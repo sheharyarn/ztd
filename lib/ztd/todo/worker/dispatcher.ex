@@ -4,6 +4,10 @@ defmodule ZTD.Todo.Worker.Dispatcher do
   alias ZTD.Todo.Event
   alias ZTD.Todo.Config
 
+  @queue    Config.get(:amqp)[:engine_queue]
+  @exchange Config.get(:amqp)[:engine_exchange]
+
+
   @moduledoc """
   Keeps a RabbitMQ connection open to the engine. Sends
   todo events to the engine where it is responsible for
@@ -11,10 +15,6 @@ defmodule ZTD.Todo.Worker.Dispatcher do
   connected workers (including self). This acts as an
   acknowledgement and the state is updated.
   """
-
-
-  @queue    Config.get(:amqp)[:engine_queue]
-  @exchange Config.get(:amqp)[:engine_exchange]
 
 
 

@@ -20,6 +20,7 @@ config :ztd, :todo,
     engine_queue:    "events",
     engine_exchange: "engine",
     worker_exchange: "workers",
+    worker_routing:  "broadcasts",
   ]
 
 
