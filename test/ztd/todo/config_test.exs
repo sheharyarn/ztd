@@ -4,7 +4,7 @@ defmodule ZTD.Tests.Todo.Config do
 
 
   setup do
-    configs = Application.get_env(:ztd, :mode)
+    configs = Application.get_env(:ztd, :todo)
 
     on_exit fn ->
       # Revert to default mode
@@ -17,7 +17,7 @@ defmodule ZTD.Tests.Todo.Config do
 
 
   describe "get/0" do
-    test "returns application config specified under :mode key", %{configs: configs} do
+    test "returns application config specified under :todo key", %{configs: configs} do
       assert Config.get == configs
     end
   end
