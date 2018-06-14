@@ -2,16 +2,47 @@ defmodule ZTD.Web.Channels.TodoEvents do
   use Phoenix.Channel
 
   alias ZTD.Todo
+  alias ZTD.Todo.Event
   alias ZTD.Web.Endpoint
 
 
-  @allowed [:insert, :update, :delete]
   @channel "todo_events"
   @relay   "event"
 
 
-  # Connect to Channel
-  # ------------------
+
+
+
+  # Public API
+  # ----------
+
+
+  @doc """
+  Broadcasts a Todo Event to all connected clients
+  on the channel
+
+  NOTE:
+  This method is being called from the main Todo
+  modules, which may cause weird issues in situations
+  where the Endpoint process hasn't been started but
+  this method is called. Consider wrapping this in
+  another module which verifies the Endpoint process
+  has already been started as part of the supervision
+  tree.
+  """
+  def broadcast!(%Event{} = event) do
+    Endpoint.broadcast!(@channel, @relay, event)
+  end
+
+
+
+
+
+  # Callbacks
+  # ---------
+
+
+  # Join Channel
 
   def join(@channel, _payload, socket) do
     {:ok, socket}
@@ -19,15 +50,11 @@ defmodule ZTD.Web.Channels.TodoEvents do
 
 
 
-
   # Handle Events
-  # -------------
-
 
   def handle_in("insert", payload, socket) do
     item = parse(payload)
     Todo.insert(item)
-    broadcast_event!(:insert, item)
     {:noreply, socket}
   end
 
@@ -35,7 +62,6 @@ defmodule ZTD.Web.Channels.TodoEvents do
   def handle_in("update", payload, socket) do
     item = %{id: id} = parse(payload)
     Todo.update(id, item)
-    broadcast_event!(:update, item)
     {:noreply, socket}
   end
 
@@ -43,7 +69,6 @@ defmodule ZTD.Web.Channels.TodoEvents do
   def handle_in("delete", payload, socket) do
     item = %{id: id} = parse(payload)
     Todo.delete(id)
-    broadcast_event!(:delete, item)
     {:noreply, socket}
   end
 
@@ -59,10 +84,5 @@ defmodule ZTD.Web.Channels.TodoEvents do
     |> Map.get(:data)
   end
 
-
-  defp broadcast_event!(type, item) when type in @allowed do
-    payload = %{type: type, data: item}
-    Endpoint.broadcast!(@channel, @relay, payload)
-  end
 
 end

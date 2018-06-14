@@ -3,6 +3,7 @@ defmodule ZTD.Todo.Engine.Broadcaster do
 
   alias ZTD.Todo.Event
   alias ZTD.Todo.Config
+  alias ZTD.Web.Channels
 
   @exchange Config.get(:amqp)[:worker_exchange]
   @routing  Config.get(:amqp)[:worker_routing]
@@ -60,7 +61,10 @@ defmodule ZTD.Todo.Engine.Broadcaster do
   @doc false
   def handle_cast({:broadcast, event}, channel) do
     message = Event.encode!(event)
-    :ok = AMQP.Basic.publish(channel, @exchange, @routing, message)
+
+    # Broadcast on both Websocket and RabbitMQ
+    Channels.TodoEvents.broadcast!(event)
+    AMQP.Basic.publish(channel, @exchange, @routing, message)
 
     {:noreply, channel}
   end
