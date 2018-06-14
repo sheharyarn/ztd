@@ -1,11 +1,14 @@
 defmodule ZTD.Todo.Worker do
   alias ZTD.Todo.Event
-  alias ZTD.Todo.Worker.Broadcaster
+  alias ZTD.Todo.Worker.Dispatcher
 
 
   @moduledoc """
   Worker implementation for the Todo interface.
   Implements all methods defined in the Todo module.
+
+  Each action is wrapped in an event and dispatched
+  to the engine.
   """
 
 
@@ -21,7 +24,7 @@ defmodule ZTD.Todo.Worker do
   def insert(%{} = params) do
     :insert
     |> Event.new(params)
-    |> Broadcaster.send!
+    |> Dispatcher.send!
   end
 
 
@@ -31,7 +34,7 @@ defmodule ZTD.Todo.Worker do
 
     :update
     |> Event.new(data)
-    |> Broadcaster.send!
+    |> Dispatcher.send!
   end
 
 
@@ -39,7 +42,7 @@ defmodule ZTD.Todo.Worker do
   def delete(id) do
     :delete
     |> Event.new(%{id: id})
-    |> Broadcaster.send!
+    |> Dispatcher.send!
   end
 
 end

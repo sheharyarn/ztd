@@ -1,4 +1,4 @@
-defmodule ZTD.Todo.Worker.Broadcaster do
+defmodule ZTD.Todo.Worker.Dispatcher do
   use GenServer
 
   alias ZTD.Todo.Event

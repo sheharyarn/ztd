@@ -62,7 +62,7 @@ defmodule ZTD.Todo.Supervisor do
   # Children for Worker Mode
   defp children(:worker) do
     [
-      worker(ZTD.Todo.Worker.Broadcaster, []),
+      worker(ZTD.Todo.Worker.Dispatcher, []),
     ]
   end
 
