@@ -38,12 +38,11 @@ defmodule ZTD.Mixfile do
       {:cowboy,               "~> 1.0"},
       {:phoenix_html,         "~> 2.10"},
       {:phoenix_live_reload,  "~> 1.0", only: :dev},
-      {:ranch,                "~> 1.4", override: true},
 
       {:ecto_rut,             "~> 1.2.2"},
       {:better_params,        "~> 0.5.0"},
       {:react_phoenix,        "~> 0.5.2"},
-      {:amqp,                 "~> 1.0"},
+      {:amqp,                 "~> 0.3.1"},
     ]
   end
 
