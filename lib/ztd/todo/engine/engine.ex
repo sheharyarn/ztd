@@ -70,12 +70,12 @@ defmodule ZTD.Todo.Engine do
 
 
   # Broadcast on success
-  defp broadcast!({:ok, item}, type) do
+  defp broadcast!({:ok, item} = term, type) do
     type
     |> Event.new(item)
     |> Broadcaster.broadcast!
 
-    :ok
+    term
   end
 
   defp broadcast!(term, _type) do

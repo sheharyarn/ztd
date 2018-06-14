@@ -69,14 +69,14 @@ defmodule ZTD.Tests.Todo.Engine do
 
 
     test "deletes an item if it exists", %{item: item} do
-      assert :ok = Engine.delete(item.id)
+      assert {:ok, _} = Engine.delete(item.id)
       assert 0 = length(Engine.Schema.all)
     end
 
 
     test "does nothing if the item does not exist" do
       unknown_id = Ecto.UUID.generate
-      assert :ok = Engine.delete(unknown_id)
+      assert {:ok, _} = Engine.delete(unknown_id)
       assert 1 = length(Engine.Schema.all)
     end
   end
