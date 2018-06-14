@@ -68,7 +68,8 @@ defmodule ZTD.Todo.Engine.Listener do
   # Receive Messages
   @doc false
   def handle_info({:basic_deliver, payload, meta}, channel) do
-    Logger.debug("Received RabbitMQ Message: #{payload}")
+    Logger.debug("Received RabbitMQ Message: #{inspect payload}")
+
     spawn fn ->
       consume(payload, meta)
     end
@@ -80,7 +81,7 @@ defmodule ZTD.Todo.Engine.Listener do
   # Discard all other messages
   @doc false
   def handle_info(message, state) do
-    Logger.debug("Received info:\n#{inspect message}")
+    Logger.debug("Received info: #{inspect message}")
     {:noreply, state}
   end
 

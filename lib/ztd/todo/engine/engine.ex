@@ -1,6 +1,8 @@
 defmodule ZTD.Todo.Engine do
   alias ZTD.Repo
+  alias ZTD.Todo.Event
   alias ZTD.Todo.Engine.Schema
+  alias ZTD.Todo.Engine.Broadcaster
   alias Ecto.Query
 
   require Query
@@ -10,6 +12,11 @@ defmodule ZTD.Todo.Engine do
   Engine implementation for the Todo interface.
   Implements all methods defined in Todo module.
   """
+
+
+
+  # Public API
+  # ----------
 
 
   @doc "Get all todos"
@@ -23,7 +30,9 @@ defmodule ZTD.Todo.Engine do
 
   @doc "Insert new todo"
   def insert(%{} = params) do
-    Schema.insert(params)
+    params
+    |> Schema.insert
+    |> broadcast!(:insert)
   end
 
 
@@ -33,6 +42,7 @@ defmodule ZTD.Todo.Engine do
     id
     |> Schema.get!
     |> Schema.update(params)
+    |> broadcast!(:update)
   end
 
 
@@ -47,7 +57,30 @@ defmodule ZTD.Todo.Engine do
     Schema
     |> Query.where([i], i.id == ^id)
     |> Repo.delete_all
+
+    broadcast!({:ok, %{id: id}}, :delete)
+  end
+
+
+
+
+
+  # Private Helpers
+  # ---------------
+
+
+  # Broadcast on success
+  defp broadcast!({:ok, item}, type) do
+    type
+    |> Event.new(item)
+    |> Broadcaster.broadcast!
+
     :ok
   end
+
+  defp broadcast!(term, _type) do
+    term
+  end
+
 
 end
