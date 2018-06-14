@@ -55,10 +55,10 @@ defmodule ZTD.Todo.Engine.Listener do
     # Declare Exchange & Queue
     AMQP.Exchange.declare(channel, @exchange, :direct)
     AMQP.Queue.declare(channel, @queue, durable: false)
-    AMQP.Queue.bind(channel, @queue, @exchange)
+    AMQP.Queue.bind(channel, @queue, @exchange, routing_key: @queue)
 
     # Start Consuming
-    AMQP.Basic.consume(channel, @queue)
+    AMQP.Basic.consume(channel, @queue, nil, no_ack: true)
 
     {:ok, channel}
   end
@@ -68,6 +68,7 @@ defmodule ZTD.Todo.Engine.Listener do
   # Receive Messages
   @doc false
   def handle_info({:basic_deliver, payload, meta}, channel) do
+    Logger.debug("Received RabbitMQ Message: #{payload}")
     spawn fn ->
       consume(payload, meta)
     end
@@ -78,7 +79,8 @@ defmodule ZTD.Todo.Engine.Listener do
 
   # Discard all other messages
   @doc false
-  def handle_info(_message, state) do
+  def handle_info(message, state) do
+    Logger.debug("Received info:\n#{inspect message}")
     {:noreply, state}
   end
 

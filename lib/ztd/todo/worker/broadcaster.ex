@@ -53,7 +53,7 @@ defmodule ZTD.Todo.Worker.Broadcaster do
     # Declare Exchange & Queue
     AMQP.Exchange.declare(channel, @exchange, :direct)
     AMQP.Queue.declare(channel, @queue, durable: false)
-    AMQP.Queue.bind(channel, @queue, @exchange)
+    AMQP.Queue.bind(channel, @queue, @exchange, routing_key: @queue)
 
     {:ok, channel}
   end
