@@ -25,7 +25,7 @@ defmodule ZTD.Todo.Worker.Broadcaster do
 
 
   @doc "Open the connection"
-  def start_link(_opts) do
+  def start_link do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
   end
 
@@ -43,6 +43,7 @@ defmodule ZTD.Todo.Worker.Broadcaster do
   ## ---------
 
 
+  # Initialize State
   @doc false
   def init(:ok) do
     # Create Connection & Channel
@@ -59,8 +60,9 @@ defmodule ZTD.Todo.Worker.Broadcaster do
 
 
 
+  # Handle cast for :send!
   @doc false
-  def handle_cast({:send, event}, _from, channel) do
+  def handle_cast({:send, event}, channel) do
     message = Event.encode!(event)
     :ok = AMQP.Basic.publish(channel, @exchange, @queue, message)
 
@@ -68,6 +70,12 @@ defmodule ZTD.Todo.Worker.Broadcaster do
   end
 
 
+
+  # Discard all info messages
+  @doc false
+  def handle_info(_message, state) do
+    {:noreply, state}
+  end
 
 
 end

@@ -58,6 +58,15 @@ defmodule ZTD.Todo.Supervisor do
   end
 
 
+  # Children for Worker Mode
+  defp children(:worker) do
+    [
+      worker(ZTD.Todo.Worker.Broadcaster, []),
+    ]
+  end
+
+
+
   # Raise error for other modes
   defp children(_mode) do
     raise "Supervision Tree not defined for specified mode"
