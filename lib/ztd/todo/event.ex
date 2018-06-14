@@ -1,5 +1,8 @@
 defmodule ZTD.Todo.Event do
+  defmodule InvalidError, do: defexception [:message]
+
   alias ZTD.Todo.Event
+
 
   @moduledoc """
   Event representing some sort of change to the Todo List
@@ -16,6 +19,11 @@ defmodule ZTD.Todo.Event do
     %Event{type: type, data: data}
   end
 
+  def new(type, _data) do
+    raise Event.InvalidError, message: "Invalid type: #{inspect type}"
+  end
+
+
 
   @doc "Encode event to string"
   def encode!(%Event{} = event) do
@@ -30,7 +38,12 @@ defmodule ZTD.Todo.Event do
       |> Poison.decode!
       |> BetterParams.symbolize_merge(drop_string_keys: true)
 
-    new(contents.type, contents.data)
+    contents.type
+    |> String.to_existing_atom
+    |> new(contents.data)
+  rescue
+    _ ->
+      raise Event.InvalidError, message: "Can't parse event: #{inspect string}"
   end
 
 end
