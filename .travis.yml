@@ -6,5 +6,9 @@ otp_release:
 services:
   - rabbitmq
 sudo: false
+env:
+  global:
+    - HEX_HTTP_CONCURRENCY=1
+    - HEX_HTTP_TIMEOUT=120
 script:
   - mix test

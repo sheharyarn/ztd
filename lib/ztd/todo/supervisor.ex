@@ -54,6 +54,7 @@ defmodule ZTD.Todo.Supervisor do
   defp children(:engine) do
     [
       supervisor(ZTD.Repo, []),
+      worker(ZTD.Todo.Engine.Broadcaster, []),
       worker(ZTD.Todo.Engine.Listener, []),
     ]
   end
@@ -62,7 +63,8 @@ defmodule ZTD.Todo.Supervisor do
   # Children for Worker Mode
   defp children(:worker) do
     [
-      worker(ZTD.Todo.Worker.Broadcaster, []),
+      worker(ZTD.Todo.Worker.Listener, []),
+      worker(ZTD.Todo.Worker.Dispatcher, []),
     ]
   end
 

@@ -1,8 +1,12 @@
-defmodule ZTD.Todo.Worker.Broadcaster do
+defmodule ZTD.Todo.Worker.Dispatcher do
   use GenServer
 
   alias ZTD.Todo.Event
   alias ZTD.Todo.Config
+
+  @queue    Config.get(:amqp)[:engine_queue]
+  @exchange Config.get(:amqp)[:engine_exchange]
+
 
   @moduledoc """
   Keeps a RabbitMQ connection open to the engine. Sends
@@ -11,10 +15,6 @@ defmodule ZTD.Todo.Worker.Broadcaster do
   connected workers (including self). This acts as an
   acknowledgement and the state is updated.
   """
-
-
-  @queue    Config.get(:amqp)[:engine_queue]
-  @exchange Config.get(:amqp)[:engine_exchange]
 
 
 

@@ -22,7 +22,7 @@ defmodule ZTD.Tests.Web.Channels.TodoEvents do
 
 
 
-  # TODO:
+  # NOTE:
   # Have separate tests for broadcasts
 
 
@@ -76,7 +76,10 @@ defmodule ZTD.Tests.Web.Channels.TodoEvents do
   # Private Helpers
   # ---------------
 
-  defp assert_broadcast!(event, payload \\ %{}) do
+
+  # NOTE:
+  # There is something weird happening here. Fix it.
+  defp assert_broadcast!(event, payload) do
     payload = Map.put(payload, :type, String.to_atom(event))
     assert_broadcast(@relay, payload)
   end
