@@ -13,7 +13,7 @@ class Todo extends React.Component {
     super(props);
 
     this.state = {
-      status: 'Inactive',
+      status: 'inactive',
       items: this.props.items,
     };
 
@@ -30,12 +30,12 @@ class Todo extends React.Component {
 
     channel
       .join()
-      .receive("ok", m => this.setState({status: 'Connected!'}))
-      .receive("error", m => this.setState({status: 'Connection Failed!'}))
+      .receive("ok", m => this.setState({status: 'connected'}))
+      .receive("error", m => this.setState({status: 'failed'}))
 
     this.setState({
       channel: channel,
-      status: 'Connecting...',
+      status: 'connecting',
     });
   }
 
@@ -105,29 +105,53 @@ class Todo extends React.Component {
   }
 
 
+  renderStatus() {
+    const {status} = this.state;
+
+    switch (status) {
+      case 'inactive':    return "Disconnected";
+      case 'connecting':  return "Connecting...";
+      case 'connected':   return "Connected!";
+      case 'failed':      return "Connection Failed!";
+    }
+  }
+
+
+  renderWall() {
+    const {status} = this.state;
+    const klass = (status === 'connected') ? 'wall inactive' : 'wall active';
+
+    return (<div className={klass}></div>);
+  }
+
+
   render() {
-    const {items, status} = this.state;
+    const {items} = this.state;
     const {mode} = this.props;
 
     return (
       <div className='todo-app'>
         <div className='app-status'>
           <span><b>App Mode:</b> {mode}</span>
-          <span><b>Status:</b> {status}</span>
+          <span><b>Socket:</b> {this.renderStatus()}</span>
         </div>
 
-        <TodoNew
-          broadcast={this.broadcast}
-        />
+        <div className='wall-holder'>
+          <TodoNew
+            broadcast={this.broadcast}
+          />
 
-        <div className='item-list'>
-          { items.map(i =>
-            <TodoItem
-              key={i.id}
-              item={i}
-              broadcast={this.broadcast}
-            />
-          )}
+          <div className='item-list'>
+            { items.map(i =>
+              <TodoItem
+                key={i.id}
+                item={i}
+                broadcast={this.broadcast}
+              />
+            )}
+          </div>
+
+          {this.renderWall()}
         </div>
       </div>
     );

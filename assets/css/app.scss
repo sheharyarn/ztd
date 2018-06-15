@@ -80,3 +80,18 @@ header.header {
     cursor: pointer;
   }
 }
+
+
+.todo-app .wall-holder {
+  position: relative;
+
+  .wall.active {
+    position: absolute;
+    background-color: rgba(#000000, 0.1);
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    cursor: not-allowed;
+  }
+}
