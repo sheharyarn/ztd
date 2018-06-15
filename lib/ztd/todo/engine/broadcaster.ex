@@ -5,8 +5,8 @@ defmodule ZTD.Todo.Engine.Broadcaster do
   alias ZTD.Todo.Config
   alias ZTD.Web.Channels
 
-  @exchange Config.get(:amqp)[:worker_exchange]
-  @routing  Config.get(:amqp)[:worker_routing]
+  @exchange Config.get(:amqp)[:broadcast_exchange]
+  @routing  Config.get(:amqp)[:broadcast_routing]
 
 
   @moduledoc """

@@ -4,8 +4,8 @@ defmodule ZTD.Todo.Worker.Dispatcher do
   alias ZTD.Todo.Event
   alias ZTD.Todo.Config
 
-  @queue    Config.get(:amqp)[:engine_queue]
-  @exchange Config.get(:amqp)[:engine_exchange]
+  @queue    Config.get(:amqp)[:request_queue]
+  @exchange Config.get(:amqp)[:request_exchange]
 
 
   @moduledoc """

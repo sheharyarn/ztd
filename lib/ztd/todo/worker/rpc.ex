@@ -18,8 +18,8 @@ defmodule ZTD.Todo.Worker.RPC do
   """
 
 
-  @request_queue    Config.get(:amqp)[:engine_queue]
-  @request_exchange Config.get(:amqp)[:engine_exchange]
+  @request_queue    Config.get(:amqp)[:request_queue]
+  @request_exchange Config.get(:amqp)[:request_exchange]
   @timeout          2_000
 
 

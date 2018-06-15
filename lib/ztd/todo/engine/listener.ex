@@ -26,8 +26,8 @@ defmodule ZTD.Todo.Engine.Listener do
   """
 
 
-  @queue    Config.get(:amqp)[:engine_queue]
-  @exchange Config.get(:amqp)[:engine_exchange]
+  @queue    Config.get(:amqp)[:request_queue]
+  @exchange Config.get(:amqp)[:request_exchange]
   @rpc      ""
 
 
