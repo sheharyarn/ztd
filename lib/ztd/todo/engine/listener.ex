@@ -20,11 +20,15 @@ defmodule ZTD.Todo.Engine.Listener do
   for each worker (maybe as a process?). This way we
   can reflect changes in UI instantly, and eventually
   support CQRS for partition tolerance.
+
+  Also create a separate GenServer for handling RPC
+  requests.
   """
 
 
   @queue    Config.get(:amqp)[:engine_queue]
   @exchange Config.get(:amqp)[:engine_exchange]
+  @rpc      ""
 
 
 
@@ -71,7 +75,7 @@ defmodule ZTD.Todo.Engine.Listener do
     Logger.debug("Received Payload: #{inspect payload}")
 
     spawn fn ->
-      consume(payload, meta)
+      consume(channel, payload, meta)
     end
 
     {:noreply, channel}
@@ -89,18 +93,27 @@ defmodule ZTD.Todo.Engine.Listener do
 
 
 
+
   ## Private Helpers
   ## ---------------
 
 
   # Consume RPC calls and respond accordingly
-  defp consume(payload, %{type: "rpc"}) do
+  defp consume(channel, command, %{type: "rpc"} = meta) do
     Logger.debug("Message Type: RPC Call")
+
+    case command do
+      "all" ->
+        rpc_reply!(channel, meta, Todo.all)
+
+      _ ->
+        raise "Unknown RPC Command: #{inspect(command)}"
+    end
   end
 
 
   # Consume event messages and perform appropriate actions
-  defp consume(payload, %{type: "event"}) do
+  defp consume(_channel, payload, %{type: "event"}) do
     Logger.debug("Message Type: Event Dispatch")
     %Event{type: type, data: data} = Event.decode!(payload)
 
@@ -125,8 +138,22 @@ defmodule ZTD.Todo.Engine.Listener do
 
 
   # Handle unknown message types
-  defp consume(_payload, meta) do
+  defp consume(_channel, _payload, meta) do
     Logger.error("Unknown Message Type. Supplied Metadata: #{inspect(meta)}")
+  end
+
+
+  # Respond to an RPC call
+  defp rpc_reply!(channel, meta, response) do
+    AMQP.Basic.publish(
+      channel,
+      @rpc,
+      meta.reply_to,
+      response,
+      correlation_id: meta.correlation_id
+    )
+  rescue
+    _ -> raise "Could not reply to RPC request: #{inspect(meta)}"
   end
 
 
