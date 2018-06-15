@@ -1,5 +1,6 @@
 defmodule ZTD.Todo.Worker do
   alias ZTD.Todo.Event
+  alias ZTD.Todo.Worker.RPC
   alias ZTD.Todo.Worker.Dispatcher
 
 
@@ -15,8 +16,7 @@ defmodule ZTD.Todo.Worker do
 
   @doc "Get all todos"
   def all do
-    # TODO: Implement
-    []
+    RPC.all
   end
 
 

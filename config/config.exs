@@ -17,8 +17,8 @@ config :ztd, :todo,
     worker: ZTD.Todo.Worker,
   ],
   amqp: [
-    request_queue:    "ztd.todo.requests.queue",
-    request_exchange: "ztd.todo.requests.exchange",
+    request_queue:      "ztd.todo.requests.queue",
+    request_exchange:   "ztd.todo.requests.exchange",
     broadcast_exchange: "ztd.todo.broadcasts.exchange",
     broadcast_routing:  "ztd.todo.broadcasts.routing",
   ]
