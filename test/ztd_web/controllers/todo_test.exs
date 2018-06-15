@@ -23,6 +23,15 @@ defmodule ZTD.Tests.Web.Controllers.Todo do
       assert response =~ ~r/Pending Item/
       assert response =~ ~r/Done Item/
     end
+
+    test "renders the app mode as the component prop", %{conn: conn} do
+      response =
+        conn
+        |> get(@path)
+        |> html_response(200)
+
+      assert response =~ ~r/#{Todo.Config.mode}/
+    end
   end
 
 end
