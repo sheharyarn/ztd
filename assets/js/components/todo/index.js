@@ -13,6 +13,7 @@ class Todo extends React.Component {
     super(props);
 
     this.state = {
+      status: 'Inactive',
       items: this.props.items,
     };
 
@@ -29,10 +30,13 @@ class Todo extends React.Component {
 
     channel
       .join()
-      .receive("ok", this.handleOkEvent)
-      .receive("error", this.handleErrorEvent)
+      .receive("ok", m => this.setState({status: 'Connected!'}))
+      .receive("error", m => this.setState({status: 'Connection Failed!'}))
 
-    this.setState({channel});
+    this.setState({
+      channel: channel,
+      status: 'Connecting...',
+    });
   }
 
 
@@ -102,10 +106,15 @@ class Todo extends React.Component {
 
 
   render() {
-    const {items} = this.state;
+    const {items, status} = this.state;
+    const {mode} = this.props;
 
     return (
       <div className='todo-app'>
+        <div className='status'>
+          <span><b>App Mode:</b> {mode}</span>
+          <span><b>Status:</b> {status}</span>
+        </div>
         <TodoNew
           broadcast={this.broadcast}
         />
@@ -132,6 +141,7 @@ Todo.defaultProps = {
 };
 
 Todo.propTypes = {
+  mode:  PropTypes.string.isRequired,
   items: PropTypes.arrayOf(TodoItem.propTypes.item).isRequired,
 };
 
