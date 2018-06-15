@@ -64,7 +64,7 @@ defmodule ZTD.Todo.Worker.Dispatcher do
   @doc false
   def handle_cast({:send, event}, channel) do
     message = Event.encode!(event)
-    :ok = AMQP.Basic.publish(channel, @exchange, @queue, message)
+    :ok = AMQP.Basic.publish(channel, @exchange, @queue, message, type: "event")
 
     {:noreply, channel}
   end
