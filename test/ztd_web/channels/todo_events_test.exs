@@ -22,7 +22,7 @@ defmodule ZTD.Tests.Web.Channels.TodoEvents do
 
 
 
-  # TODO:
+  # NOTE:
   # Have separate tests for broadcasts
 
 
