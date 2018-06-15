@@ -13,6 +13,7 @@ class Todo extends React.Component {
     super(props);
 
     this.state = {
+      status: 'inactive',
       items: this.props.items,
     };
 
@@ -29,10 +30,13 @@ class Todo extends React.Component {
 
     channel
       .join()
-      .receive("ok", this.handleOkEvent)
-      .receive("error", this.handleErrorEvent)
+      .receive("ok", m => this.setState({status: 'connected'}))
+      .receive("error", m => this.setState({status: 'failed'}))
 
-    this.setState({channel});
+    this.setState({
+      channel: channel,
+      status: 'connecting',
+    });
   }
 
 
@@ -101,23 +105,53 @@ class Todo extends React.Component {
   }
 
 
+  renderStatus() {
+    const {status} = this.state;
+
+    switch (status) {
+      case 'inactive':    return "Disconnected";
+      case 'connecting':  return "Connecting...";
+      case 'connected':   return "Connected!";
+      case 'failed':      return "Connection Failed!";
+    }
+  }
+
+
+  renderWall() {
+    const {status} = this.state;
+    const klass = (status === 'connected') ? 'wall inactive' : 'wall active';
+
+    return (<div className={klass}></div>);
+  }
+
+
   render() {
     const {items} = this.state;
+    const {mode} = this.props;
 
     return (
       <div className='todo-app'>
-        <TodoNew
-          broadcast={this.broadcast}
-        />
+        <div className='app-status'>
+          <span><b>App Mode:</b> {mode}</span>
+          <span><b>Socket:</b> {this.renderStatus()}</span>
+        </div>
 
-        <div className='item-list'>
-          { items.map(i =>
-            <TodoItem
-              key={i.id}
-              item={i}
-              broadcast={this.broadcast}
-            />
-          )}
+        <div className='wall-holder'>
+          <TodoNew
+            broadcast={this.broadcast}
+          />
+
+          <div className='item-list'>
+            { items.map(i =>
+              <TodoItem
+                key={i.id}
+                item={i}
+                broadcast={this.broadcast}
+              />
+            )}
+          </div>
+
+          {this.renderWall()}
         </div>
       </div>
     );
@@ -132,6 +166,7 @@ Todo.defaultProps = {
 };
 
 Todo.propTypes = {
+  mode:  PropTypes.string.isRequired,
   items: PropTypes.arrayOf(TodoItem.propTypes.item).isRequired,
 };
 

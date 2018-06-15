@@ -11,7 +11,7 @@
 
 
 header.header {
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 
   h1 {
     text-align: center;
@@ -26,10 +26,23 @@ header.header {
 /* Todo Components
  * *************** */
 
+.todo-app .app-status {
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 30px;
+  padding-bottom: 10px;
+  font-size: 10px;
+  text-align: center;
+  text-transform: uppercase;
+
+  span:not(:last-child) {
+    margin-right: 15px;
+  }
+}
+
+
 .todo-app .new-item {
   input {
     font-size: 1.5em;
-    margin-bottom: 1em;
     width: 100%;
   }
 }
@@ -65,5 +78,20 @@ header.header {
     color: #777;
     margin-top: 1px;
     cursor: pointer;
+  }
+}
+
+
+.todo-app .wall-holder {
+  position: relative;
+
+  .wall.active {
+    position: absolute;
+    background-color: rgba(#000000, 0.1);
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    cursor: not-allowed;
   }
 }
