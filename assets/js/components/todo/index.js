@@ -111,10 +111,11 @@ class Todo extends React.Component {
 
     return (
       <div className='todo-app'>
-        <div className='status'>
+        <div className='app-status'>
           <span><b>App Mode:</b> {mode}</span>
           <span><b>Status:</b> {status}</span>
         </div>
+
         <TodoNew
           broadcast={this.broadcast}
         />
