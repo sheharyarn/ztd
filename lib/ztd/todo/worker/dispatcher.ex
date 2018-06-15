@@ -4,8 +4,8 @@ defmodule ZTD.Todo.Worker.Dispatcher do
   alias ZTD.Todo.Event
   alias ZTD.Todo.Config
 
-  @queue    Config.get(:amqp)[:engine_queue]
-  @exchange Config.get(:amqp)[:engine_exchange]
+  @queue    Config.get(:amqp)[:request_queue]
+  @exchange Config.get(:amqp)[:request_exchange]
 
 
   @moduledoc """
@@ -64,7 +64,7 @@ defmodule ZTD.Todo.Worker.Dispatcher do
   @doc false
   def handle_cast({:send, event}, channel) do
     message = Event.encode!(event)
-    :ok = AMQP.Basic.publish(channel, @exchange, @queue, message)
+    AMQP.Basic.publish(channel, @exchange, @queue, message, type: "event")
 
     {:noreply, channel}
   end

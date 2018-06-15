@@ -18,17 +18,16 @@ defmodule ZTD.Web.Channels.TodoEvents do
 
 
   @doc """
-  Broadcasts a Todo Event to all connected clients
-  on the channel
+  Broadcasts a Todo Event to all connected clients on the
+  channel
 
   NOTE:
-  This method is being called from the main Todo
-  modules, which may cause weird issues in situations
-  where the Endpoint process hasn't been started but
-  this method is called. Consider wrapping this in
-  another module which verifies the Endpoint process
-  has already been started as part of the supervision
-  tree.
+  This method is being called from the main Todo modules,
+  which may cause weird issues in situations where the
+  Endpoint process hasn't been started but this method is
+  called. Consider wrapping this in another module which
+  verifies the Endpoint process has already been started
+  as part of the supervision tree.
   """
   def broadcast!(%Event{} = event) do
     Endpoint.broadcast!(@channel, @relay, event)

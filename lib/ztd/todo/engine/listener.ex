@@ -20,11 +20,15 @@ defmodule ZTD.Todo.Engine.Listener do
   for each worker (maybe as a process?). This way we
   can reflect changes in UI instantly, and eventually
   support CQRS for partition tolerance.
+
+  Also create a separate GenServer for handling RPC
+  requests.
   """
 
 
-  @queue    Config.get(:amqp)[:engine_queue]
-  @exchange Config.get(:amqp)[:engine_exchange]
+  @queue    Config.get(:amqp)[:request_queue]
+  @exchange Config.get(:amqp)[:request_exchange]
+  @rpc      ""
 
 
 
@@ -68,14 +72,15 @@ defmodule ZTD.Todo.Engine.Listener do
   # Receive Messages
   @doc false
   def handle_info({:basic_deliver, payload, meta}, channel) do
-    Logger.debug("Received RabbitMQ Message: #{inspect payload}")
+    Logger.debug("Received Payload: #{inspect payload}")
 
     spawn fn ->
-      consume(payload, meta)
+      consume(channel, payload, meta)
     end
 
     {:noreply, channel}
   end
+
 
 
   # Discard all other messages
@@ -88,12 +93,29 @@ defmodule ZTD.Todo.Engine.Listener do
 
 
 
+
   ## Private Helpers
   ## ---------------
 
 
-  # Parse the event and perform the actions
-  defp consume(payload, _meta) do
+  # Consume RPC calls and respond accordingly
+  defp consume(channel, command, %{type: "rpc"} = meta) do
+    Logger.debug("Message Type: RPC Call")
+
+    case command do
+      "all" ->
+        payload = Poison.encode!(Todo.all)
+        rpc_reply!(channel, meta, payload)
+
+      _ ->
+        raise "Unknown RPC Command: #{inspect(command)}"
+    end
+  end
+
+
+  # Consume event messages and perform appropriate actions
+  defp consume(_channel, payload, %{type: "event"}) do
+    Logger.debug("Message Type: Event Dispatch")
     %Event{type: type, data: data} = Event.decode!(payload)
 
     case type do
@@ -113,6 +135,26 @@ defmodule ZTD.Todo.Engine.Listener do
   rescue
     Event.InvalidError ->
       raise "Received invalid event data #{inspect(payload)}"
+  end
+
+
+  # Handle unknown message types
+  defp consume(_channel, _payload, meta) do
+    Logger.error("Unknown Message Type. Supplied Metadata: #{inspect(meta)}")
+  end
+
+
+  # Respond to an RPC call
+  defp rpc_reply!(channel, meta, response) do
+    AMQP.Basic.publish(
+      channel,
+      @rpc,
+      meta.reply_to,
+      response,
+      correlation_id: meta.correlation_id
+    )
+  rescue
+    _ -> raise "Could not reply to RPC request: #{inspect(meta)}"
   end
 
 
