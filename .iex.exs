@@ -1,4 +1,5 @@
 alias ZTD.{Todo, Todo.Config, Todo.Engine, Todo.Worker}
+alias ZTD.{Web, Web.Channels.TodoEvents}
 alias ZTD.Repo
 alias Ecto.Query
 

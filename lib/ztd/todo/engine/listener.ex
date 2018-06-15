@@ -104,7 +104,8 @@ defmodule ZTD.Todo.Engine.Listener do
 
     case command do
       "all" ->
-        rpc_reply!(channel, meta, Todo.all)
+        payload = Poison.encode!(Todo.all)
+        rpc_reply!(channel, meta, payload)
 
       _ ->
         raise "Unknown RPC Command: #{inspect(command)}"

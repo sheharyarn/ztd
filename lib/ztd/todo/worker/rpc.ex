@@ -1,4 +1,7 @@
 defmodule ZTD.Todo.Worker.RPC do
+  alias ZTD.Todo.Config
+
+
   @moduledoc """
   RPC Client interface to the engine. Sends rpc
   requests via RabbitMQ to the engine and waits
@@ -17,7 +20,7 @@ defmodule ZTD.Todo.Worker.RPC do
 
   @request_queue    Config.get(:amqp)[:engine_queue]
   @request_exchange Config.get(:amqp)[:engine_exchange]
-
+  @timeout          2_000
 
 
 
@@ -25,6 +28,10 @@ defmodule ZTD.Todo.Worker.RPC do
 
   ## Public API
   ## ----------
+
+  def all do
+    rpc_request!("all")
+  end
 
 
 
@@ -52,13 +59,6 @@ defmodule ZTD.Todo.Worker.RPC do
   end
 
 
-  # Close a Connection
-  defp close_connection({connection, channel, _queue}) do
-    AMQP.Channel.close(channel)
-    AMQP.Connection.close(connection)
-  end
-
-
   # Perform an RPC Request
   defp rpc_request!(command) do
     id = generate_id()
@@ -69,6 +69,8 @@ defmodule ZTD.Todo.Worker.RPC do
       channel,
       @request_exchange,
       @request_queue,
+      command,
+      type: "rpc",
       reply_to: queue,
       correlation_id: id
     )
@@ -81,12 +83,10 @@ defmodule ZTD.Todo.Worker.RPC do
   defp wait_for_response(conn, id) do
     receive do
       {:basic_deliver, payload, %{correlation_id: ^id}} ->
-        payload
-        |> Poison.decode!
-        |> BetterParams.symbolize_merge(drop_string_keys: true)
+        Poison.decode!(payload)
+    after
+      @timeout -> raise "RPC Call Timed out"
     end
-  after
-    close_connection(conn)
   end
 
 
