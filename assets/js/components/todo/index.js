@@ -27,11 +27,13 @@ class Todo extends React.Component {
   componentDidMount() {
     let channel = Socket.channel("todo_events", {});
     channel.on("event", this.handleOkEvent);
+    channel.onError(() => this.setState({status: 'failed'}));
+    channel.onClose(() => this.setState({status: 'inactive'}));
 
     channel
       .join()
-      .receive("ok", m => this.setState({status: 'connected'}))
-      .receive("error", m => this.setState({status: 'failed'}))
+      .receive("ok", () => this.setState({status: 'connected'}))
+      .receive("error", () => this.setState({status: 'failed'}))
 
     this.setState({
       channel: channel,
