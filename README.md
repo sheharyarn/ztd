@@ -1,20 +1,35 @@
-# ZTD
+ZTD
+===
 
-To start your Phoenix server:
+[![Build Status][shield-travis]][travis-ci]
+[![License][shield-license]][hexpm]
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
-  * Install Node.js dependencies with `cd assets && npm install`
-  * Start Phoenix endpoint with `mix phx.server`
+> Todo App written in Elixir/Phoenix using RabbitMQ
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
 
-## Learn more
 
-  * Official website: http://www.phoenixframework.org/
-  * Guides: http://phoenixframework.org/docs/overview
-  * Docs: https://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
+## Installation
+
+
+
+## Running the app
+
+
+
+## Testing and Contributing
+
+
+
+## License
+
+
+
+
+  [shield-license]:   https://img.shields.io/github/license/sheharyarn/ztd.svg
+  [shield-travis]:    https://img.shields.io/travis/sheharyarn/ztd/master.svg
+  [travis-ci]:        https://travis-ci.org/sheharyarn/ztd
+
+  [license]:          https://opensource.org/licenses/MIT
+  [github-fork]:      https://github.com/sheharyarn/ztd/fork
+
