@@ -12,7 +12,7 @@ stores and reads items from disk. When run in Worker mode, the app doesn't
 have it's own state, instead it listens to events from the engine and
 dispatches events to it when actions are performed.
 
-Demo:
+**Demo:**
 
 [![ZTD Demo Video][demo-thumb]][demo-video]
 
@@ -73,7 +73,31 @@ $ foreman start
 
 ## Implementation Details
 
+The application exports one main module `Todo`, whose implementation is
+further organized into two adapters `Engine` and `Worker`. Depending on
+the mode the application is started in, the supervisor only boots those
+processes, and the Todo module delegates the function calls to the
+appropriate adapter. Since the Web UI only directly interacts with the
+`Todo` module, so it does not concern itself with the implementation.
 
+When the application is running in the Engine mode, it stores and reads
+items from the Postgres database. Actions performed via the Todo
+interface are wrapped in an `Event` struct, and when successful, are
+broadcasted both on all open Phoenix channels as well as on a RabbitMQ
+fanout exchange.
+
+When run in Worker mode, the app does not have its own state, volatile
+or non-volatile. This is by design. It gets initial list of items via
+an RPC call implmented over RabbitMQ and listens for events on the
+fanout exchange. When actions are performed, they are again wrapped as
+events and dispatched to the Engine where when successfully performed,
+are broadcasted and received backed by all workers. This also acts as
+an acknowledgement.
+
+Admittedly, the app is not "truly distributed" since each worker does
+not have its own state, and does not have any kind of partition
+tolerance. Other than that, something like CQRS would be a great way
+to ensure consistency.
 
 <br>
 
@@ -102,7 +126,7 @@ You can also help by contributing to the project:
 
 ## License
 
-This package is available as open source under the terms of the [MIT License][license].
+The code is available as open source under the terms of the [MIT License][license].
 
 <br>
 
